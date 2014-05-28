@@ -7,7 +7,6 @@ if (PKG_CONFIG_FOUND)
 endif (PKG_CONFIG_FOUND)
 find_package(OpenCV REQUIRED)
 find_package(Boost REQUIRED COMPONENTS thread)
-find_package(orocos_kdl  REQUIRED)
 
 find_package(catkin REQUIRED COMPONENTS roscpp
                                         std_msgs
@@ -20,10 +19,7 @@ find_package(catkin REQUIRED COMPONENTS roscpp
                                         angles
                                         dynamic_reconfigure
                                         image_geometry
-                                        message_generation
-                                        kdl_parser # still needed?
-                                        laser_assembler #still needed?
-)
+                                        message_generation)
 
 
 # generate_dynamic_reconfigure_options(cfg/multisense.cfg.in)
@@ -92,8 +88,6 @@ catkin_package(INCLUDE_DIRS   include
                               image_transport
                               message_runtime
                               message_generation
-                              kdl_parser
-                              laser_assembler
                LIBRARIES      ${PROJECT_NAME}
                DEPENDS        system_lib)
 
