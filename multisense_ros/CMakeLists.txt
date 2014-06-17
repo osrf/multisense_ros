@@ -22,45 +22,7 @@ find_package(catkin REQUIRED COMPONENTS roscpp
                                         message_generation)
 
 
-# generate_dynamic_reconfigure_options(cfg/multisense.cfg.in)
-
-###############################################
-# custom dynamic reconfigure
-catkin_destinations()  # get catkin variable defines for destinations
-set(CFG_NAME sl_bm_cmv2000)
-set(CFG_SGM FALSE)
-set(CFG_IMU FALSE)
-configure_file (cfg/multisense.cfg.in ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/cfg/sl_bm_cmv2000.cfg @ONLY)
-set(CFG_NAME sl_bm_cmv2000_imu)
-set(CFG_SGM FALSE)
-set(CFG_IMU TRUE)
-configure_file (cfg/multisense.cfg.in ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/cfg/sl_bm_cmv2000_imu.cfg @ONLY)
-set(CFG_NAME sl_bm_cmv4000)
-set(CFG_SGM FALSE)
-set(CFG_IMU FALSE)
-configure_file (cfg/multisense.cfg.in ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/cfg/sl_bm_cmv4000.cfg @ONLY)
-set(CFG_NAME sl_bm_cmv4000_imu)
-set(CFG_SGM FALSE)
-set(CFG_IMU TRUE)
-configure_file (cfg/multisense.cfg.in ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/cfg/sl_bm_cmv4000_imu.cfg @ONLY)
-set(CFG_NAME sl_sgm_cmv2000_imu)
-set(CFG_SGM TRUE)
-set(CFG_IMU TRUE)
-configure_file (cfg/multisense.cfg.in ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/cfg/sl_sgm_cmv2000_imu.cfg @ONLY)
-set(CFG_NAME sl_sgm_cmv4000_imu)
-set(CFG_SGM TRUE)
-set(CFG_IMU TRUE)
-configure_file (cfg/multisense.cfg.in ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/cfg/sl_sgm_cmv4000_imu.cfg @ONLY)
-
-generate_dynamic_reconfigure_options(
-  ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/cfg/sl_bm_cmv2000.cfg
-  ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/cfg/sl_bm_cmv2000_imu.cfg
-  ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/cfg/sl_bm_cmv4000.cfg
-  ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/cfg/sl_bm_cmv4000_imu.cfg
-  ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/cfg/sl_sgm_cmv2000_imu.cfg
-  ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/cfg/sl_sgm_cmv4000_imu.cfg
-)
-###############################################
+generate_dynamic_reconfigure_options(cfg/multisense.cfg)
 
 add_message_files(DIRECTORY msg
                   FILES
@@ -109,6 +71,8 @@ target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES}
                                       ${OpenCV_LIBS}
                                       ${Boost_LIBRARIES}
                                       ${multisense_lib_LIBRARIES})
+
+
 target_link_libraries(${PROJECT_NAME} MultiSense)
 set_target_properties(${PROJECT_NAME}
   PROPERTIES LINK_FLAGS "-L${PROJECT_SOURCE_DIR}/../multisense_lib/sensor_api/bin/")
@@ -117,14 +81,18 @@ set_target_properties(${PROJECT_NAME}
 
 add_executable(ros_driver src/ros_driver.cpp)
 target_link_libraries(ros_driver ${PROJECT_NAME})
-target_link_libraries(ros_driver yaml-cpp)
+target_link_libraries(ros_driver yaml-cpp 
+                                 turbojpeg)
 set_target_properties(ros_driver
   PROPERTIES COMPILE_FLAGS "-I${PROJECT_SOURCE_DIR}/../multisense_lib/sensor_api/source/LibMultiSense")
+
+add_dependencies(ros_driver ${PROJECT_NAME}_generate_messages_cpp)
 
 add_executable(raw_snapshot src/raw_snapshot.cpp)
 target_link_libraries(raw_snapshot ${catkin_LIBRARIES}
                                    ${OpenCV_LIBS}
                                    ${Boost_LIBRARIES})
+
 add_dependencies(raw_snapshot ${PROJECT_NAME}_generate_messages_cpp)
 
 ## Install
@@ -142,35 +110,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
   PATTERN ".svn" EXCLUDE
 )
 
-## Mark other files for installation (e.g. launch and bag files, etc.)
-install(FILES
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sl_bm_cmv2000Config-usage.dox
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sl_bm_cmv2000Config.dox
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sl_bm_cmv2000Config.wikidoc
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sl_bm_cmv2000_imuConfig-usage.dox
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sl_bm_cmv2000_imuConfig.dox
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sl_bm_cmv2000_imuConfig.wikidoc
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sl_bm_cmv4000Config-usage.dox
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sl_bm_cmv4000Config.dox
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sl_bm_cmv4000Config.wikidoc
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sl_bm_cmv4000_imuConfig-usage.dox
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sl_bm_cmv4000_imuConfig.dox
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sl_bm_cmv4000_imuConfig.wikidoc
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sl_sgm_cmv2000_imuConfig-usage.dox
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sl_sgm_cmv2000_imuConfig.dox
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sl_sgm_cmv2000_imuConfig.wikidoc
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sl_sgm_cmv4000_imuConfig-usage.dox
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sl_sgm_cmv4000_imuConfig.dox
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs/sl_sgm_cmv4000_imuConfig.wikidoc
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/docs
+install (DIRECTORY ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/docs
+         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
-install(FILES
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/cfg/sl_bm_cmv2000.cfg
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/cfg/sl_bm_cmv2000_imu.cfg
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/cfg/sl_bm_cmv4000.cfg
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/cfg/sl_bm_cmv4000_imu.cfg
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/cfg/sl_sgm_cmv2000_imu.cfg
-    ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/cfg/sl_sgm_cmv4000_imu.cfg
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/cfg
-)

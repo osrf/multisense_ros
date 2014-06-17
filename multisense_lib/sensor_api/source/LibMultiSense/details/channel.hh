@@ -91,6 +91,11 @@ public:
     virtual Status stopStreams           (DataSource mask);
     virtual Status getEnabledStreams     (DataSource& mask);
 
+    virtual Status startDirectedStream   (const DirectedStream& stream);
+    virtual Status stopDirectedStream    (const DirectedStream& stream);
+    virtual Status getDirectedStreams    (std::vector<DirectedStream>& streams);
+    virtual Status maxDirectedStreams    (uint32_t& maximum);
+
     virtual Status setTriggerSource      (TriggerSource s);
 
     virtual Status setMotorSpeed         (float rpm);
@@ -143,6 +148,7 @@ public:
                                           uint32_t& bufferSize);
     virtual Status setLargeBuffers       (const std::vector<uint8_t*>& buffers,
                                           uint32_t                     bufferSize);
+    virtual Status getLocalUdpPort       (uint16_t& port);
 
 private:
 
@@ -157,7 +163,7 @@ private:
     //
     // The version of this API
 
-    static const VersionType API_VERSION = 0x0300; // 3.0
+    static const VersionType API_VERSION = 0x0301; // 3.1
 
     //
     // Misc. internal constants
@@ -191,6 +197,13 @@ private:
 
     static const uint32_t MAX_USER_PPS_QUEUE_SIZE = 2;
     static const uint32_t MAX_USER_IMU_QUEUE_SIZE = 50;
+
+    //
+    // The maximum number of directed streams
+    //  (this is completely arbitrary, TODO: determine
+    //   reasonable values per hardware type)
+
+    static const uint32_t MAX_DIRECTED_STREAMS = 10;
 
     //
     // A re-assembler for multi-packet messages
@@ -240,9 +253,10 @@ private:
     };
 
     //
-    // The socket identifier
+    // The socket identifier and local port
 
-    int32_t m_serverSocket;
+    int32_t  m_serverSocket;
+    uint16_t m_serverSocketPort;
 
     //
     // The address of the sensor

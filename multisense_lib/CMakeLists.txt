@@ -27,15 +27,6 @@ catkin_package(LIBRARIES MultiSense)
 # Build the libraries
 add_subdirectory(sensor_api)
 
-# install sensor_api/bin/libMultiSense*.so* to lib
-install(
- FILES
-   ${CATKIN_DEVEL_PREFIX}/lib/libMultiSense.so
-   ${CATKIN_DEVEL_PREFIX}/lib/libMultiSense.so.3.0
- DESTINATION
-   ${CATKIN_PACKAGE_LIB_DESTINATION}
-)
-
 ## Mark cpp header files for installation
 install(DIRECTORY sensor_api/source/LibMultiSense/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
