@@ -17,7 +17,6 @@
   <run_depend>multisense_bringup</run_depend>
   <run_depend>multisense_ros</run_depend>
   <run_depend>multisense_lib</run_depend>
-  <run_depend>multisense_dashboard</run_depend>
   <run_depend>multisense_cal_check</run_depend>
 
 
