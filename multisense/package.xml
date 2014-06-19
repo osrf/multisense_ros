@@ -13,7 +13,6 @@
 
 
   <buildtool_depend>catkin</buildtool_depend>
-  <run_depend>multisense_diagnostics</run_depend>
   <run_depend>multisense_description</run_depend>
   <run_depend>multisense_bringup</run_depend>
   <run_depend>multisense_ros</run_depend>
