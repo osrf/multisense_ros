@@ -1,13 +1,14 @@
 <?xml version="1.0"?>
 <package>
   <name>multisense_lib</name>
-  <version>0.0.0</version>
+  <version>1.0.0</version>
   <description>multisense_lib</description>
   <maintainer email="support@carnegierobotics.com">Carnegie Robotics</maintainer>
   <license>LGPL</license>
 
   <url type="website">https://bitbucket.org/crl/multisense_ros</url>
 
+  <build_depend>libpng12-dev</build_depend>
   <buildtool_depend>catkin</buildtool_depend>
-
+  <run_depend>libpng12-dev</run_depend>
 </package>

@@ -17,12 +17,13 @@ class SensorConfig(object):
 #endclass
 
 sensorConfigList = []
-sensorConfigList.append(SensorConfig(name="sl_bm_cmv2000",     sgm=False, imu=False))
-sensorConfigList.append(SensorConfig(name="sl_bm_cmv2000_imu", sgm=False, imu=True))
-sensorConfigList.append(SensorConfig(name="sl_bm_cmv4000",     sgm=False, imu=False))
-sensorConfigList.append(SensorConfig(name="sl_bm_cmv4000_imu", sgm=False, imu=True))
-sensorConfigList.append(SensorConfig(name="sl_sgm_cmv2000_imu", sgm=True, imu=True))
-sensorConfigList.append(SensorConfig(name="sl_sgm_cmv4000_imu", sgm=True, imu=True))
+# sensorConfigList.append(SensorConfig(name="sl_bm_cmv2000",     sgm=False, imu=False))
+# sensorConfigList.append(SensorConfig(name="sl_bm_cmv2000_imu", sgm=False, imu=True))
+# sensorConfigList.append(SensorConfig(name="sl_bm_cmv4000",     sgm=False, imu=False))
+# sensorConfigList.append(SensorConfig(name="sl_bm_cmv4000_imu", sgm=False, imu=True))
+# sensorConfigList.append(SensorConfig(name="sl_sgm_cmv2000_imu", sgm=True, imu=True))
+# sensorConfigList.append(SensorConfig(name="sl_sgm_cmv4000_imu", sgm=True, imu=True))
+sensorConfigList.append(SensorConfig(name="@CFG_NAME@",     sgm=("@CFG_SGM@"=="TRUE"), imu=("@CFG_IMU@"=="TRUE")))
 
 for cfg in sensorConfigList:
     gen = ParameterGenerator()
